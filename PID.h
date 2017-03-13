@@ -1,3 +1,8 @@
+/*
+  PID.h - Simple implementation of PID controller
+  Created by Laurent Rouvinez & Marc Widmer - 2017
+*/
+
 #ifndef PID_h
 #define PID_h
 
