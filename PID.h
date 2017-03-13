@@ -1,5 +1,5 @@
 /*
-  PID.h - Simple implementation of PID controller
+  PID.h - Simple implementation of a PID controller
   Created by Laurent Rouvinez & Marc Widmer - 2017
 */
 
