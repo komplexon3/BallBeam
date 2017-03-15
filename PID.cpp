@@ -3,6 +3,8 @@
   Created by Laurent Rouvinez & Marc Widmer - 2017
 */
 
+//add I restrictions
+
 #include <Arduino.h>
 #include <PID.h>
 
@@ -50,8 +52,6 @@ double PID::getKp() {return _kp;}
 double PID::getKi() {return _ki;}
 double PID::getKd() {return _kd;}
 
-void PID::setMinDeltaTime(unsigned long minDeltaTime) {
-  _minDeltaTime = minDeltaTime;
-}
+void PID::setMinDeltaTime(unsigned long minDeltaTime) {_minDeltaTime = minDeltaTime;}
 
 double PID::getMinDeltaTime() {return _minDeltaTime;}
