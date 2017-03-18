@@ -30,8 +30,6 @@ double Tracker::readResistance() {
     voltageSum += voltages[i];
   }
 
-  //add sort and add up the lowest n elements
-
   float vAverage = voltageSum / _sampleSelect;
   return trackResistance = vAverage * _resistor / (5 - vAverage);
 }
