@@ -1,4 +1,4 @@
-/* 
+/*
   Tracker.h - Library for tracking the position of
   a steel ball on resistive rails
   Created by Laurent Rouvinez & Marc Widmer - 2017
@@ -9,7 +9,7 @@
 
 class Tracker {
   public:
-    Tracker(int analogPin, int sampleCount, double maxVoltage);
+    Tracker(int analogPin, int sampleCount, int sampleSelect);
 
     double readResistance();
     double readPosition();
@@ -18,17 +18,17 @@ class Tracker {
     void setMaxResistance();
 
     void setSampleCount(int sampleCount);
-    void setMaxVoltage(double maxVoltage);
 
     double getMinResistance();
     double getMaxResistance();
 
     int getSampleCount();
-    double getMaxvoltage();
 
   private:
-    int _analogPin, _resistor, _sampleCount;
-    double _maxVoltage, _minResistance, _maxResistance;
+    const int _analogPin, _resistor;
+    int _sampleCount, _sampleSelect; //max 50
+
+    double _minResistance, _maxResistance;
 }
 
 #endif

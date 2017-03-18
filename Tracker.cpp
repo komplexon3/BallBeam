@@ -5,28 +5,34 @@
 */
 
 #include <Arduino.h>
+#include <ArduinoSort.h>
 #include <Tracker.h>
 
-Tracker::Tracker(int analogPin, int resistor, int sampleCount, double voltageTreshold) {
+Tracker::Tracker(int analogPin, int resistor, int sampleCount, int sampleSelect) {
   _analogPin = analogPin;
+  _resistor = resistor;
   _sampleCount = sampleCount;
-  _voltageTreshold = voltageTreshold;
-  _resistor = resistor
+  _sampleSelect = sampleSelect;
 }
 
 double Tracker::readResistance() {
-  float vSum = 0;
-  float vCount = 0;
+  double voltages[_sampleCount];
+  double voltageSum = 0;
 
   for(int i = 0; i < _sampleCount; i++){
-      if(int v = (analogRead(_analogPin) * 5 / 1024) <= _voltageTreshold) {
-        vSum += v;
-        vCount++;
-      }
-      delay(1);
+    voltages[i] = analogRead(_analogPin) * 5 / 1024;
+    delay(1);
   }
 
-  float vAverage = vSum / vCount;
+  sortArray(voltages);
+
+  for(int i = 0; i < _sampleSelect; i++) {
+    voltageSum += voltages[i];
+  }
+
+  //add sort and add up the lowest n elements
+
+  float vAverage = voltageSum / _sampleSelect;
   return trackResistance = vAverage * _resistor / (5 - vAverage);
 }
 
@@ -38,10 +44,10 @@ void Tracker::setMinResistance() {_minResistance = readResistance();}
 void Tracker::setMaxResistance() {_maxResistance = readResistance();}
 
 void Tracker::setSampleCount(int sampleCount) {_sampleCount = sampleCount;}
-void Tracker::setMaxVoltage(double maxVoltage) {_maxVoltage = maxVoltage;}
+void Tracker::setSampleSelect(int sampleSelect) {_sampleSelect = sampleSelect;}
 
 double Tracker::getMinResistance() {return _minResistance;}
 double Tracker::getMaxResistance() {return _maxResistance;}
 
 int Tracker::getSampleCount() {return _sampleCount;}
-double Tracker::getMaxvoltage() {return _maxVoltage;}
+int Tracker::getSampleSelect() {return _sampleSelect;}

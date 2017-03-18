@@ -24,7 +24,8 @@ class PID {
 
   private:
     double *_feedback;
-    double _target, _lastFeedback, _iError, _kp, _ki, _kd;
+    const double _target;
+    double _lastFeedback, _iError, _kp, _ki, _kd;
 
     unsigned long _minDeltaTime, _lastTime
 }
