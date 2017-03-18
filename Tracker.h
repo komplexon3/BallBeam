@@ -18,11 +18,13 @@ class Tracker {
     void setMaxResistance();
 
     void setSampleCount(int sampleCount);
+    void setSampleSelect(int sampleSelect);
 
     double getMinResistance();
     double getMaxResistance();
 
     int getSampleCount();
+    int getSampleSelect();
 
   private:
     const int _analogPin, _resistor;
