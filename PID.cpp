@@ -11,6 +11,8 @@
 PID::PID(double* feedback, double target, double kp, double ki, double kd) {
   *_feedback = feedback;
   _target = target;
+  _integralBound = integralBound;
+
   _kp = kp;
   _ki = ki;
   _kd = kd;
@@ -24,14 +26,20 @@ PID::PID(double* feedback, double target, double kp, double ki, double kd) {
 int PID::compute() {
   unsigned long now = millis;
   unsigned long deltaTime = now - _lastTime;
+
   if(deltaTime >= _minDeltaTime) {
     _lastTime = now;
+
     double currentFeedback = *_feedback;
     double error = _target - currentFeedback;
-    _iError += error;
+
+    if(abs(error) >= _integralBound) {
+      _integralError += error;
+    }
+
     double deltaX = currentFeedback - _lastFeedback;
     _lastFeedback = currentFeedback;
-    _output = _kp * error + _ki * _iError * deltaTime - _kd * deltaX / deltaTime
+    _output = _kp * error + _ki * _integralError * deltaTime - _kd * deltaX / deltaTime
     return _output;
   } else {
     return _output;
@@ -53,5 +61,7 @@ double PID::getKi() {return _ki;}
 double PID::getKd() {return _kd;}
 
 void PID::setMinDeltaTime(unsigned long minDeltaTime) {_minDeltaTime = minDeltaTime;}
-
 double PID::getMinDeltaTime() {return _minDeltaTime;}
+
+void PID::setIntegralBound(double integralBound) {_integralBound = integralBound;}
+double PID::getIntegralBound() {return _integralBound;}
