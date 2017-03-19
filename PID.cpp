@@ -3,8 +3,6 @@
   Created by Laurent Rouvinez & Marc Widmer - 2017
 */
 
-//add I restrictions
-
 #include <Arduino.h>
 #include <PID.h>
 
