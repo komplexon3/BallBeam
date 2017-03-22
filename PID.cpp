@@ -6,7 +6,7 @@
 #include <Arduino.h>
 #include <PID.h>
 
-PID::PID(double* feedback, double target, double kp, double ki, double kd) {
+PID::PID(double* feedback, double target, double integralBound, double kp, double ki, double kd) {
   *_feedback = feedback;
   _target = target;
   _integralBound = integralBound;

@@ -9,7 +9,7 @@
 
 class Tracker {
   public:
-    Tracker(int analogPin, int sampleCount, int sampleSelect);
+    Tracker(int analogPin, int resistor, int sampleCount, int sampleSelect);
 
     double readResistance();
     double readPosition();
