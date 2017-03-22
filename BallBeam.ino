@@ -18,13 +18,14 @@
 #define target 15
 #define integralBound 3
 #define kp 0.5
-#define k
+#define ki 0.5
+#define kp 0.5
 
 double feedback;
 
 Servo servo;
 Tracker tracker = new Tracker(railsPin, resistance, sampleCount, sampleSelect);
-PID pid = new PID(&feedback, 15.0, 3.0, 0.5, 0.5, 0.5);
+PID pid = new PID(&feedback, target, integralBound, kp, ki, kp);
 
 void setup() {
   Serial.begin(9600);
