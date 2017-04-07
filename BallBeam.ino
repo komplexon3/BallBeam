@@ -2,13 +2,20 @@
 #import <PID.h>
 #import <Servo.h>
 
-#define servoPin 10 // placeholder
-#define railsPin 11 // paceholder - must be analogPin
+// Cnnfigure Buttons
+
 #define calibrationButtonPin 12 // placeholder
 #define runButtonPin 13 // placeholder
 
+// Configure Servo
+
+#define servoPin 10 // placeholder
+#define minAngle 60 // placeholder
+#define maxAngle 120 // placeholder
+
 // Configure Tracker
 
+#define railsPin 11 // paceholder - must be analogPin
 #define resistance 220 //Vive La Résistance!!
 #define sampleCount 10
 #define sampleSelect 3
@@ -21,6 +28,7 @@
 #define ki 0.5
 #define kp 0.5
 
+
 double feedback;
 
 Servo servo;
@@ -31,16 +39,29 @@ void setup() {
   Serial.begin(9600);
   servo.attach(servoPin);
 
+  servo.write(90);
 }
 
 void loop() {
-
+  
 }
 
 void pidLoop() {
-
+  int angle = map(pid.compute(), 0, 100, 60, 120);
+  servo.write(angle);
 }
 
 void calibration() {
+  servo.write(minAngle);
+  delay(5000);
+  tracker.setMinResistance();
 
+  servo.write(90);
+  delay(2000);
+
+  servo.write(maxAngle);
+  delay(5000);
+  tracker.setMaxResistance();
+
+  servo.write(0);
 }
