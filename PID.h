@@ -9,6 +9,7 @@
 class PID {
   public:
     PID(double* feedback, double target, double integralBound, double kp, double ki, double kd);
+
     int Compute();
 
     void setWeights(double kp, double ki, double kd);
@@ -26,7 +27,7 @@ class PID {
     double getIntegralBound();
 
   private:
-    double *_feedback;
+    double _feedback;
     const double _target;
     double _lastFeedback, _integralError, _integralBound, _kp, _ki, _kd;
 
