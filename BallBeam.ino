@@ -24,16 +24,18 @@
 
 #define target 15
 #define integralBound 3
+#define feedbackAmplitude 100
 #define kp 0.5
 #define ki 0.5
 #define kp 0.5
 
 
 double feedback;
+bool run = false;
 
 Servo servo;
 Tracker tracker = new Tracker(railsPin, resistance, sampleCount, sampleSelect);
-PID pid = new PID(&feedback, target, integralBound, kp, ki, kp);
+PID pid = new PID(target, integralBound, feedbackAmplitude, kp, ki, kp);
 
 void setup() {
   Serial.begin(9600);
@@ -43,11 +45,19 @@ void setup() {
 }
 
 void loop() {
-  
+  run = !digitalRead(runButtonPin) ? !run : run;
+
+  if(digitalRead(calibrationButtonPin))
+    calibration();
+
+  if(run)
+    pidLoop();
+
+  delay(10);
 }
 
 void pidLoop() {
-  int angle = map(pid.compute(), 0, 100, 60, 120);
+  int angle = map(pid.compute(), -feedbackAmplitude, feedbackAmplitude, minAngle, maxAngle);
   servo.write(angle);
 }
 

@@ -6,10 +6,11 @@
 #include <Arduino.h>
 #include <PID.h>
 
-PID::PID(double feedback, double target, double integralBound, double kp, double ki, double kd) {
+PID::PID(double target, double integralBound, double feedbackAmplitude, double kp, double ki, double kd) {
   _feedback = feedback;
   _target = target;
   _integralBound = integralBound;
+  _feedbackAmplitude = feedbackAmplitude;
 
   _kp = kp;
   _ki = ki;
@@ -18,7 +19,7 @@ PID::PID(double feedback, double target, double integralBound, double kp, double
   _minDeltaTime = 100;
 
   _lastTime = millis();
-  _lastFeedback = feedback;
+  _feedback = 0;
 }
 
 int PID::compute() {
@@ -37,10 +38,17 @@ int PID::compute() {
 
     double deltaX = currentFeedback - _lastFeedback;
     _lastFeedback = currentFeedback;
-    _output = _kp * error + _ki * _integralError * deltaTime - _kd * deltaX / deltaTime
-    return _output;
+    _feedback = _kp * error + _ki * _integralError * deltaTime - _kd * deltaX / deltaTime
+
+    if(_feedback >= feedbackAmplitude) {
+      _feedback = feedbackAmplitude
+    } else if(_feedback <= -feedbackAmplitude) {
+      _feedback = -feedbackAmplitude
+    }
+
+    return _feedback;
   } else {
-    return _output;
+    return _feedback;
   }
 }
 
@@ -63,3 +71,6 @@ double PID::getMinDeltaTime() {return _minDeltaTime;}
 
 void PID::setIntegralBound(double integralBound) {_integralBound = integralBound;}
 double PID::getIntegralBound() {return _integralBound;}
+
+void PID::setFeedbackAmplitude(double feedbackAmplitude) {_feedbackAmplitude = feedbackAmplitude;}
+double PID::getFeedbackAmplitude() {return _feedbackAmplitude;}
