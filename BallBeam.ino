@@ -32,6 +32,7 @@
 
 double feedback;
 bool run = false;
+bool calibrated = false;
 
 Servo servo;
 Tracker tracker = Tracker(railsPin, resistance, sampleCount, sampleSelect);
@@ -41,10 +42,19 @@ void setup() {
   Serial.begin(9600);
   servo.attach(servoPin);
 
+  pinMode(calibrationButtonPin, INPUT_PULLUP);
+  pinMode(runButtonPin, INPUT_PULLUP);
+
   servo.write(90);
+
+  while(digitalRead(calibrationButtonPin))
+    delay(10);
+
+  calibration();
 }
 
 void loop() {
+
   run = !digitalRead(runButtonPin) ? !run : run;
 
   if(digitalRead(calibrationButtonPin))
