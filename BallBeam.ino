@@ -34,8 +34,8 @@ double feedback;
 bool run = false;
 
 Servo servo;
-Tracker tracker = new Tracker(railsPin, resistance, sampleCount, sampleSelect);
-PID pid = new PID(target, integralBound, feedbackAmplitude, kp, ki, kp);
+Tracker tracker = Tracker(railsPin, resistance, sampleCount, sampleSelect);
+PID pid = PID(target, integralBound, feedbackAmplitude, kp, ki, kp);
 
 void setup() {
   Serial.begin(9600);

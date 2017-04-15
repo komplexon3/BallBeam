@@ -27,10 +27,10 @@ class Tracker {
     int getSampleSelect();
 
   private:
-    const int _analogPin, _resistor;
+    int _analogPin, _resistor;
     int _sampleCount, _sampleSelect; //max 50
 
     double _minResistance, _maxResistance;
-}
+};
 
 #endif

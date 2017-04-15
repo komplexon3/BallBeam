@@ -7,7 +7,6 @@
 #include <PID.h>
 
 PID::PID(double target, double integralBound, double feedbackAmplitude, double kp, double ki, double kd) {
-  _feedback = feedback;
   _target = target;
   _integralBound = integralBound;
   _feedbackAmplitude = feedbackAmplitude;
@@ -29,7 +28,7 @@ int PID::compute() {
   if(deltaTime >= _minDeltaTime) {
     _lastTime = now;
 
-    double currentFeedback = *_feedback;
+    double currentFeedback = _feedback;
     double error = _target - currentFeedback;
 
     if(abs(error) >= _integralBound) {
@@ -38,13 +37,10 @@ int PID::compute() {
 
     double deltaX = currentFeedback - _lastFeedback;
     _lastFeedback = currentFeedback;
-    _feedback = _kp * error + _ki * _integralError * deltaTime - _kd * deltaX / deltaTime
+    _feedback = _kp * error + _ki * _integralError * deltaTime - _kd * deltaX / deltaTime;
 
-    if(_feedback >= feedbackAmplitude) {
-      _feedback = feedbackAmplitude
-    } else if(_feedback <= -feedbackAmplitude) {
-      _feedback = -feedbackAmplitude
-    }
+    _feedback = _feedback >= _feedbackAmplitude ? _feedbackAmplitude : _feedback;
+    _feedback = _feedback <= -_feedbackAmplitude ? -_feedbackAmplitude : _feedback;
 
     return _feedback;
   } else {
@@ -67,7 +63,7 @@ double PID::getKi() {return _ki;}
 double PID::getKd() {return _kd;}
 
 void PID::setMinDeltaTime(unsigned long minDeltaTime) {_minDeltaTime = minDeltaTime;}
-double PID::getMinDeltaTime() {return _minDeltaTime;}
+unsigned long PID::getMinDeltaTime() {return _minDeltaTime;}
 
 void PID::setIntegralBound(double integralBound) {_integralBound = integralBound;}
 double PID::getIntegralBound() {return _integralBound;}

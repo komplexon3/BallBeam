@@ -24,14 +24,14 @@ double Tracker::readResistance() {
     delay(1);
   }
 
-  sortArray(voltages);
+  sortArray(voltages, sizeof(voltages));
 
   for(int i = 0; i < _sampleSelect; i++) {
     voltageSum += voltages[i];
   }
 
   float vAverage = voltageSum / _sampleSelect;
-  return trackResistance = vAverage * _resistor / (5 - vAverage);
+  return vAverage * _resistor / (5 - vAverage);
 }
 
 double Tracker::readPosition() {

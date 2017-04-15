@@ -10,7 +10,7 @@ class PID {
   public:
     PID(double target, double integralBound, double feedbackAmplitude, double kp, double ki, double kd);
 
-    int Compute();
+    int compute();
 
     void setWeights(double kp, double ki, double kd);
     void setKp(double kp);
@@ -18,7 +18,7 @@ class PID {
     void setKd(double kd);
     double getKp();
     double getKi();
-    double getKp();
+    double getKd();
 
     void setMinDeltaTime(unsigned long minDeltaTime);
     unsigned long getMinDeltaTime();
@@ -30,9 +30,10 @@ class PID {
     double getFeedbackAmplitude();
 
   private:
-    double _feedback;
-    const double _target;
+    double _feedback, _target;
     double _lastFeedback, _integralError, _integralBound, _feedbackAmplitude, _kp, _ki, _kd;
 
-    unsigned long _minDeltaTime, _lastTime
-}
+    unsigned long _minDeltaTime, _lastTime;
+};
+
+#endif
