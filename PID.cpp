@@ -4,7 +4,7 @@
 */
 
 #include <Arduino.h>
-#include <PID.h>
+#include "PID.h"
 
 PID::PID(double target, double integralBound, double feedbackAmplitude, double kp, double ki, double kd) {
   _target = target;
@@ -22,7 +22,7 @@ PID::PID(double target, double integralBound, double feedbackAmplitude, double k
 }
 
 int PID::compute() {
-  unsigned long now = millis;
+  unsigned long now = millis();
   unsigned long deltaTime = now - _lastTime;
 
   if(deltaTime >= _minDeltaTime) {
@@ -31,7 +31,7 @@ int PID::compute() {
     double currentFeedback = _feedback;
     double error = _target - currentFeedback;
 
-    if(abs(error) <= _integralBound) {
+    if(abs(error) >= _integralBound) {
       _integralError += error;
     }
 

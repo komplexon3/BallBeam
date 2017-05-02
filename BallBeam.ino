@@ -1,8 +1,8 @@
-#import <Tracker.h>
-#import <PID.h>
-#import <Servo.h>
+#include "Tracker.h"
+#include "PID.h"
+#include <Servo.h>
 
-// Cnnfigure Buttons
+// Configure Buttons
 
 #define calibrationButtonPin 12 // placeholder
 #define runButtonPin 13 // placeholder

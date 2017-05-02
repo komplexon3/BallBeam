@@ -5,8 +5,8 @@
 */
 
 #include <Arduino.h>
-#include <ArduinoSort.h>
-#include <Tracker.h>
+#include "ArduinoSort.h"
+#include "Tracker.h"
 
 Tracker::Tracker(int analogPin, int resistor, int sampleCount, int sampleSelect) {
   _analogPin = analogPin;
