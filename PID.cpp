@@ -31,7 +31,7 @@ int PID::compute() {
     double currentFeedback = _feedback;
     double error = _target - currentFeedback;
 
-    if(abs(error) >= _integralBound) {
+    if(abs(error) <= _integralBound) {
       _integralError += error;
     }
 
