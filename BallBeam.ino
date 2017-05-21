@@ -22,23 +22,26 @@
 
 // Configure PID
 
-#define target 15
-#define integralBound 3
-#define feedbackAmplitude 100
-#define kp 0.5
-#define ki 0.5
-#define kp 0.5
+#define target 15 // placeholder
+#define integralBound 3 // placeholder
+#define feedbackAmplitude 100 // placeholder
+#define kp 0.5 // placeholder
+#define ki 0.5 // placeholder
+#define kp 0.5 // placeholder
 
 
 double feedback;
+double position;
+
 bool run = false;
 bool calibrated = false;
 
 Servo servo;
 Tracker tracker = Tracker(railsPin, resistance, sampleCount, sampleSelect);
-PID pid = PID(target, integralBound, feedbackAmplitude, kp, ki, kp);
+PID pid = PID(target, &position, integralBound, feedbackAmplitude, kp, ki, kp);
 
 void setup() {
+  //setting up Arduino
   Serial.begin(9600);
   servo.attach(servoPin);
 
@@ -47,6 +50,7 @@ void setup() {
 
   servo.write(90);
 
+  //waiting for calibration button to be pressed
   while(digitalRead(calibrationButtonPin))
     delay(10);
 
@@ -55,18 +59,18 @@ void setup() {
 
 void loop() {
 
+  //checking if pid looo should start running
   run = !digitalRead(runButtonPin) ? !run : run;
 
-  if(digitalRead(calibrationButtonPin))
-    calibration();
-
   if(run)
+    position = tracker.readPosition();
     pidLoop();
 
   delay(10);
 }
 
 void pidLoop() {
+
   int angle = map(pid.compute(), -feedbackAmplitude, feedbackAmplitude, minAngle, maxAngle);
   servo.write(angle);
 }
@@ -83,5 +87,5 @@ void calibration() {
   delay(5000);
   tracker.setMaxResistance();
 
-  servo.write(0);
+  servo.write((minAngle+maxAngle)/2);
 }
